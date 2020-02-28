@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "990030919844",
+    "firebase_url": "https://bus-location-tracker-3313f.firebaseio.com",
+    "project_id": "bus-location-tracker-3313f",
+    "storage_bucket": "bus-location-tracker-3313f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:990030919844:android:6a015657f4296d70b08e31",
+        "android_client_info": {
+          "package_name": "com.example.bus_location_tracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "990030919844-nh68rmikofftrmamkohcnkj10f8tvhch.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMCoFRwCq0ifxn8-cdq00Ugf_I-MO0u9s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "990030919844-nh68rmikofftrmamkohcnkj10f8tvhch.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
