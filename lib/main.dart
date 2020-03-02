@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import './Widgets/login.dart';
+import './Screens/login.dart';
 
 main() {
   runApp(BusLocationTracker());

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+
+
 import '../Animation/FadeAnimation.dart';
+import './CreateAccountPage.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -97,7 +100,7 @@ class LoginPageState extends State<LoginPage> {
                           Container(
                             padding: EdgeInsets.all(5),
                             decoration: BoxDecoration(
-                                color: Color.fromRGBO(201, 146, 8, 1),
+                                color: Color(0xffe46b10),
                                 borderRadius: BorderRadius.circular(10),
                                 boxShadow: [
                                   BoxShadow(
@@ -151,8 +154,8 @@ class LoginPageState extends State<LoginPage> {
                                       offset: Offset(0, 10)),
                                 ],
                                 gradient: LinearGradient(colors: [
-                                  Color.fromRGBO(212, 153, 6, 1),
-                                  Color.fromRGBO(250, 180, 5, 1),
+                                  Color(0xffe46b10),
+                                  Color(0xffe46b10)
                                 ])),
                             child: Center(
                               child: Text(
@@ -184,7 +187,12 @@ class LoginPageState extends State<LoginPage> {
                       FadeAnimation(
                         1.5,
                         RaisedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) =>  CreateAccount()), 
+                          );
+                          },
                           color: Colors.white,
                           child: Text(
                             "Create Account",
