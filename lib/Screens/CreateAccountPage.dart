@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../Widgets/BezierContainer.dart';
 import '../Animation/FadeAnimation.dart';
@@ -13,9 +14,12 @@ class CreateAccount extends StatefulWidget {
 
 class CreateAccountState extends State<CreateAccount> {
 
-  TextEditingController nameController;
-  TextEditingController mailController;
-  TextEditingController passwordController;
+  final nameController = TextEditingController();
+  final mailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  final db = Firestore.instance;
+
   @override
   Widget _backButton() {
     return InkWell(
@@ -38,7 +42,7 @@ class CreateAccountState extends State<CreateAccount> {
     );
   }
 
-  Widget _entryField(String title, {bool isPassword = false}) {
+  Widget _entryField(String title, TextEditingController txController, {bool isPassword = false}) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10),
       child: Column(
@@ -57,6 +61,7 @@ class CreateAccountState extends State<CreateAccount> {
                   border: InputBorder.none,
                   fillColor: Color(0xfff3f3f4),
                   filled: true),
+            controller: txController,
           )
         ],
       ),
@@ -68,9 +73,11 @@ class CreateAccountState extends State<CreateAccount> {
       3.4, 
       GestureDetector(
         onTap: (){
-          print("Name is $nameController");
-          print("mail is $mailController");
-          print("password is $passwordController");
+          print("Name is ${nameController.value.text}");
+          print("mail is ${mailController.value.text}");
+          print("password is ${passwordController.value.text}");
+          
+          createData();
         },
        child: Container(
       width: MediaQuery.of(context).size.width,
@@ -179,9 +186,9 @@ class CreateAccountState extends State<CreateAccount> {
   Widget _emailPasswordWidget() {
     return Column(
       children: <Widget>[
-        FadeAnimation(2.2, _entryField("Username",),),
-        FadeAnimation(2.6, _entryField("Email id",)),
-        FadeAnimation(3.0, _entryField("Password",  isPassword: true)),
+        FadeAnimation(2.2, _entryField("Username", nameController),),
+        FadeAnimation(2.6, _entryField("Email id", mailController)),
+        FadeAnimation(3.0, _entryField("Password", passwordController, isPassword: true)),
       ],
     );
   }
@@ -236,5 +243,16 @@ class CreateAccountState extends State<CreateAccount> {
       )
     );
   }
-}
+
+   void createData() async {
+   
+      DocumentReference ref = await db.collection('USERS').add(
+        {'name': '${nameController.value.text}', 
+        'mail': '${mailController.value.text}',
+        'password': '${passwordController.value.text}',
+        },
+        );
+    }
+  }
+
 
