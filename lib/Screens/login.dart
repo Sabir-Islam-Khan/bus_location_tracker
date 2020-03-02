@@ -20,11 +20,12 @@ class LoginPageState extends State<LoginPage> {
         body: SingleChildScrollView(
           // container for every other element
           child: Container(
+            height: MediaQuery.of(context).size.height * 1,
             child: Column(
               children: <Widget>[
                 // main image on the top
                 Container(
-                  height: 400,
+                  height: MediaQuery.of(context).size.height * 0.45,
                   decoration: BoxDecoration(
                       image: DecorationImage(
                           image: AssetImage('assets/background.png'),
@@ -56,7 +57,7 @@ class LoginPageState extends State<LoginPage> {
                         width: 190,
                         height: 270,
                         child: FadeAnimation(
-                            2.5,
+                            1.4,
                             Container(
                               margin: EdgeInsets.only(top: 235.0),
                               child: Text(
@@ -71,7 +72,7 @@ class LoginPageState extends State<LoginPage> {
                       // App title animation
                       Positioned(
                         child: FadeAnimation(
-                            1.6,
+                            2.0,
                             Container(
                               margin: EdgeInsets.only(top: 260),
                               child: Center(
@@ -96,7 +97,7 @@ class LoginPageState extends State<LoginPage> {
                     children: <Widget>[
                       Padding(padding: EdgeInsets.only(top: 20.0)),
                       FadeAnimation(
-                          1.8,
+                          2.4,
                           Container(
                             padding: EdgeInsets.all(5),
                             decoration: BoxDecoration(
@@ -141,7 +142,7 @@ class LoginPageState extends State<LoginPage> {
                         height: 40,
                       ),
                       FadeAnimation(
-                          2,
+                          2.8,
                           // container for log in button
                           Container(
                             height: 50,
@@ -172,7 +173,7 @@ class LoginPageState extends State<LoginPage> {
                       ),
                       // Forget password text
                       FadeAnimation(
-                          1.5,
+                          3.0,
                           Text(
                             "Forgot Password?",
                             style: TextStyle(
@@ -185,7 +186,7 @@ class LoginPageState extends State<LoginPage> {
                       ),
                       // animated create id button
                       FadeAnimation(
-                        1.5,
+                        3.2,
                         RaisedButton(
                           onPressed: () {
                             Navigator.push(

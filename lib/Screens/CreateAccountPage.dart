@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../Widgets/BezierContainer.dart';
+import '../Animation/FadeAnimation.dart';
 
 class CreateAccount extends StatefulWidget {
   @override
@@ -11,6 +12,10 @@ class CreateAccount extends StatefulWidget {
 }
 
 class CreateAccountState extends State<CreateAccount> {
+
+  TextEditingController nameController;
+  TextEditingController mailController;
+  TextEditingController passwordController;
   @override
   Widget _backButton() {
     return InkWell(
@@ -51,14 +56,23 @@ class CreateAccountState extends State<CreateAccount> {
               decoration: InputDecoration(
                   border: InputBorder.none,
                   fillColor: Color(0xfff3f3f4),
-                  filled: true))
+                  filled: true),
+          )
         ],
       ),
     );
   }
 
   Widget _submitButton() {
-    return Container(
+    return FadeAnimation(
+      3.4, 
+      GestureDetector(
+        onTap: (){
+          print("Name is $nameController");
+          print("mail is $mailController");
+          print("password is $passwordController");
+        },
+       child: Container(
       width: MediaQuery.of(context).size.width,
       padding: EdgeInsets.symmetric(vertical: 15),
       alignment: Alignment.center,
@@ -75,9 +89,14 @@ class CreateAccountState extends State<CreateAccount> {
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
               colors: [Color(0xfffbb448), Color(0xfff7892b)])),
-      child: Text(
+      child: FadeAnimation(
+        1.5, 
+        Text(
         'Register Now',
         style: TextStyle(fontSize: 20, color: Colors.white),
+      ),
+      )
+    ),
       ),
     );
   }
@@ -89,9 +108,12 @@ class CreateAccountState extends State<CreateAccount> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Text(
+          FadeAnimation(
+            3.7, 
+            Text(
             'Already have an account ?',
             style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.white)
+          ),
           ),
           SizedBox(
             width: 10,
@@ -100,13 +122,15 @@ class CreateAccountState extends State<CreateAccount> {
             onTap: () {
             
             },
-            child: Text(
+            child: FadeAnimation(
+              3.7,
+              Text(
               'Login',
               style: TextStyle(
                   color: Color(0xfff79c4f),
                   fontSize: 13,
                   fontWeight: FontWeight.w600),
-            ),
+            ),)
           )
         ],
       ),
@@ -114,7 +138,9 @@ class CreateAccountState extends State<CreateAccount> {
   }
 
   Widget _title() {
-    return RichText(
+    return FadeAnimation(
+      1.8,
+      RichText(
       textAlign: TextAlign.center,
       text: TextSpan(
           text: 'B',
@@ -126,23 +152,36 @@ class CreateAccountState extends State<CreateAccount> {
           ),
           children: [
             TextSpan(
-              text: 'us',
+              text: 'u',
+              style: TextStyle(color: Colors.white, fontSize: 30),
+            ),
+             TextSpan(
+              text: 'S',
               style: TextStyle(color: Color(0xffe46b10), fontSize: 30),
             ),
             TextSpan(
-              text: '  App',
+              text: '  A',
+              style: TextStyle(color: Color(0xffe46b10), fontSize: 30),
+            ),
+            TextSpan(
+              text: 'p',
+              style: TextStyle(color: Colors.white, fontSize: 30),
+            ),
+            TextSpan(
+              text: 'P',
               style: TextStyle(color: Color(0xffe46b10), fontSize: 30),
             ),
           ]),
+    ),
     );
   }
 
   Widget _emailPasswordWidget() {
     return Column(
       children: <Widget>[
-        _entryField("Username",),
-        _entryField("Email id"),
-        _entryField("Password", isPassword: true),
+        FadeAnimation(2.2, _entryField("Username",),),
+        FadeAnimation(2.6, _entryField("Email id",)),
+        FadeAnimation(3.0, _entryField("Password",  isPassword: true)),
       ],
     );
   }
@@ -190,7 +229,7 @@ class CreateAccountState extends State<CreateAccount> {
               Positioned(
                   top: -MediaQuery.of(context).size.height * .15,
                   right: -MediaQuery.of(context).size.width * .4,
-                  child: BezierContainer())
+                  child: FadeAnimation(1, BezierContainer()))
             ],
           ),
         )
