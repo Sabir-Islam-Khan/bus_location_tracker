@@ -12,6 +12,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class LoginPageState extends State<LoginPage> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -118,6 +119,7 @@ class LoginPageState extends State<LoginPage> {
                                           bottom:
                                               BorderSide(color: Colors.white))),
                                   child: TextField(
+                                    
                                     decoration: InputDecoration(
                                         border: InputBorder.none,
                                         hintText: "Email or Phone number",
@@ -128,6 +130,7 @@ class LoginPageState extends State<LoginPage> {
                                 Container(
                                   padding: EdgeInsets.all(8.0),
                                   child: TextField(
+                                  
                                     decoration: InputDecoration(
                                         border: InputBorder.none,
                                         hintText: "Password",

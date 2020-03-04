@@ -1,9 +1,12 @@
+import 'package:bus_location_tracker/Services/Auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../Widgets/BezierContainer.dart';
 import '../Animation/FadeAnimation.dart';
+import '../Screens/TestScreen.dart';
 
 class CreateAccount extends StatefulWidget {
   @override
@@ -14,12 +17,17 @@ class CreateAccount extends StatefulWidget {
 
 class CreateAccountState extends State<CreateAccount> {
 
+
+  // Controllers and other variables
   final nameController = TextEditingController();
   final mailController = TextEditingController();
   final passwordController = TextEditingController();
 
+  final AuthService _auth = AuthService(); 
   final db = Firestore.instance;
 
+
+  // Widget for Top button
   @override
   Widget _backButton() {
     return InkWell(
@@ -42,6 +50,9 @@ class CreateAccountState extends State<CreateAccount> {
     );
   }
 
+  // Widget for entry field
+  // This is actually a combination to code less
+
   Widget _entryField(String title, TextEditingController txController, {bool isPassword = false}) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10),
@@ -55,29 +66,75 @@ class CreateAccountState extends State<CreateAccount> {
           SizedBox(
             height: 10,
           ),
+
+          // Maybe convert this into form later
+          // It works for now
           TextField(
               obscureText: isPassword,
               decoration: InputDecoration(
                   border: InputBorder.none,
                   fillColor: Color(0xfff3f3f4),
                   filled: true),
-            controller: txController,
+              controller: txController,
+              
           )
         ],
       ),
     );
   }
 
+
+  // Register button
+  // some process needs to be changed later
   Widget _submitButton() {
     return FadeAnimation(
       3.4, 
       GestureDetector(
-        onTap: (){
-          print("Name is ${nameController.value.text}");
-          print("mail is ${mailController.value.text}");
-          print("password is ${passwordController.value.text}");
+        onTap: () async {
           
-          createData();
+          // Have to crate efficient validator later
+          String user = nameController.value.text;
+          String mail = mailController.value.text;
+          String password = passwordController.value.text;
+          
+          int mailValidate = 0;
+          int passValidate = 0;
+
+          if(mail.isNotEmpty){
+            mailValidate = 1;
+          }
+
+          if(password.length >= 6 ){
+            passValidate = 1;
+          }
+          // change the validation later
+          // TODO: This is for you Sohan
+          if(mailValidate == 0 && passValidate == 0){
+            print("Enter valid info !");
+          
+          } else if (mailValidate == 1 && passValidate == 1){
+            print("Validator Works !");
+
+            dynamic result = await _auth.registerWithMail(mail, password);
+
+            if(result == null){
+              // do something later on
+            } else {
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) =>  Test()), 
+              );
+
+            }
+
+            nameController.clear();
+            mailController.clear();
+            passwordController.clear();
+          }
+
+
+          // createData();
         },
        child: Container(
       width: MediaQuery.of(context).size.width,
@@ -108,6 +165,8 @@ class CreateAccountState extends State<CreateAccount> {
     );
   }
 
+
+  // label on the bottom of the page
   Widget _loginAccountLabel() {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 20),
@@ -129,6 +188,8 @@ class CreateAccountState extends State<CreateAccount> {
             onTap: () {
             
             },
+
+            // TODO: convert this into button later
             child: FadeAnimation(
               3.7,
               Text(
@@ -144,6 +205,7 @@ class CreateAccountState extends State<CreateAccount> {
     );
   }
 
+  // widget for the title
   Widget _title() {
     return FadeAnimation(
       1.8,
@@ -183,6 +245,7 @@ class CreateAccountState extends State<CreateAccount> {
     );
   }
 
+  // Entry fields column
   Widget _emailPasswordWidget() {
     return Column(
       children: <Widget>[
@@ -193,6 +256,7 @@ class CreateAccountState extends State<CreateAccount> {
     );
   }
 
+  // main page
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -244,14 +308,16 @@ class CreateAccountState extends State<CreateAccount> {
     );
   }
 
+  // dont know need this or not
+  // just keeping it in case gonna need it
    void createData() async {
    
-      DocumentReference ref = await db.collection('USERS').add(
-        {'name': '${nameController.value.text}', 
-        'mail': '${mailController.value.text}',
-        'password': '${passwordController.value.text}',
-        },
-        );
+   //   DocumentReference ref = await db.collection('USERS').add(
+   //     {'name': '${nameController.value.text}', 
+   //     'mail': '${mailController.value.text}',
+   //     'password': '${passwordController.value.text}',
+   //     },
+   //     );
     }
   }
 

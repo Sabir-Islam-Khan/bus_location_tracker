@@ -20,8 +20,7 @@ dependencies:
   flutter:
     sdk: flutter
   cloud_firestore: ^0.13.0+1
-  geolocator: ^5.3.0
-  location: ^2.5.0
+  firebase_auth:
   simple_animations:
   google_fonts:
 
