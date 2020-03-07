@@ -1,8 +1,11 @@
+import 'package:bus_location_tracker/Services/Auth.dart';
 import 'package:flutter/material.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
+import "package:rflutter_alert/rflutter_alert.dart";
 
 import '../Animation/FadeAnimation.dart';
 import './CreateAccountPage.dart';
+import '../Screens/HomePage.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -12,11 +15,14 @@ class LoginPage extends StatefulWidget {
 }
 
 class LoginPageState extends State<LoginPage> {
+  final AuthService _auth = AuthService();
+  final nameController = TextEditingController();
+  final passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //whole pages background colour
+        //whole pages background colour
         backgroundColor: Color.fromRGBO(26, 26, 48, .9),
         body: SingleChildScrollView(
           // container for every other element
@@ -119,23 +125,31 @@ class LoginPageState extends State<LoginPage> {
                                           bottom:
                                               BorderSide(color: Colors.white))),
                                   child: TextField(
-                                    
+                                    style: new TextStyle(
+                                      color: Colors.white,
+                                    ),
                                     decoration: InputDecoration(
-                                        border: InputBorder.none,
-                                        hintText: "Email or Phone number",
-                                        hintStyle:
-                                            TextStyle(color: Colors.white)),
+                                      border: InputBorder.none,
+                                      hintText: "Email Id",
+                                      hintStyle: TextStyle(color: Colors.white),
+                                    ),
+                                    keyboardType: TextInputType.emailAddress,
+                                    controller: nameController,
                                   ),
                                 ),
                                 Container(
                                   padding: EdgeInsets.all(8.0),
                                   child: TextField(
-                                  
+                                    style: new TextStyle(
+                                      color: Colors.white,
+                                    ),
                                     decoration: InputDecoration(
-                                        border: InputBorder.none,
-                                        hintText: "Password",
-                                        hintStyle:
-                                            TextStyle(color: Colors.white)),
+                                      border: InputBorder.none,
+                                      hintText: "Password",
+                                      hintStyle: TextStyle(color: Colors.white),
+                                    ),
+                                    obscureText: true,
+                                    controller: passwordController,
                                   ),
                                 )
                               ],
@@ -145,9 +159,54 @@ class LoginPageState extends State<LoginPage> {
                         height: 40,
                       ),
                       FadeAnimation(
-                          2.8,
-                          // container for log in button
-                          Container(
+                        2.8,
+                        // container for log in button
+                        GestureDetector(
+                          onTap: () async {
+                            String mail = nameController.value.text;
+                            String password = passwordController.value.text;
+
+                            if (mail.isNotEmpty &&
+                                password.isNotEmpty &&
+                                password.length >= 6) {
+                              dynamic result =
+                                  await _auth.signInWithMail(mail, password);
+
+                              if (result == null) {
+                                Alert(
+                                  context: context,
+                                  type: AlertType.error,
+                                  title: "Error !!",
+                                  desc:
+                                      "User not Found. Check credentials !",
+                                  buttons: [
+                                    DialogButton(
+                                      child: Text(
+                                        "Okay",
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 20),
+                                      ),
+                                      onPressed: () => Navigator.pop(context),
+                                      width: 120,
+                                    )
+                                  ],
+                                ).show();
+                              } else {
+                                
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) =>  HomePage())
+                                );
+
+                              }
+                            } else {
+                              print("Invalid");
+                            }
+
+                            nameController.clear();
+                            passwordController.clear();
+                          },
+                          child: Container(
                             height: 50,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
@@ -170,7 +229,9 @@ class LoginPageState extends State<LoginPage> {
                                     fontSize: 25.0),
                               ),
                             ),
-                          )),
+                          ),
+                        ),
+                      ),
                       SizedBox(
                         height: 30,
                       ),
@@ -193,9 +254,10 @@ class LoginPageState extends State<LoginPage> {
                         RaisedButton(
                           onPressed: () {
                             Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) =>  CreateAccount()), 
-                          );
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => CreateAccount()),
+                            );
                           },
                           color: Colors.white,
                           child: Text(
