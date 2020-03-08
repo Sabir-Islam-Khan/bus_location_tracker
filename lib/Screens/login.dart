@@ -1,11 +1,11 @@
 import 'package:bus_location_tracker/Services/Auth.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import "package:rflutter_alert/rflutter_alert.dart";
 
 import '../Animation/FadeAnimation.dart';
 import './CreateAccountPage.dart';
 import '../Screens/HomePage.dart';
+import '../Screens/Loading.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -19,9 +19,11 @@ class LoginPageState extends State<LoginPage> {
   final nameController = TextEditingController();
   final passwordController = TextEditingController();
 
+  bool loading = false; 
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return loading ? Loading() : Scaffold(
         //whole pages background colour
         backgroundColor: Color.fromRGBO(26, 26, 48, .9),
         body: SingleChildScrollView(
@@ -169,10 +171,18 @@ class LoginPageState extends State<LoginPage> {
                             if (mail.isNotEmpty &&
                                 password.isNotEmpty &&
                                 password.length >= 6) {
+
+                              setState(() {
+                                loading = true;
+                              });    
                               dynamic result =
                                   await _auth.signInWithMail(mail, password);
 
                               if (result == null) {
+
+                                setState(() {
+                                  loading = false; 
+                                });
                                 Alert(
                                   context: context,
                                   type: AlertType.error,
@@ -192,11 +202,10 @@ class LoginPageState extends State<LoginPage> {
                                   ],
                                 ).show();
                               } else {
-                                
-                                Navigator.push(
+                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(builder: (context) =>  HomePage())
-                                );
+                                ); 
 
                               }
                             } else {
