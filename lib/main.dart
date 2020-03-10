@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import './Services/Auth.dart';
 
 import './Screens/login.dart';
+import './Models/User.dart';
 
 main() {
   runApp(BusLocationTracker());

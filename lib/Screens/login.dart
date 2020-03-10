@@ -1,6 +1,7 @@
 import 'package:bus_location_tracker/Services/Auth.dart';
 import 'package:flutter/material.dart';
 import "package:rflutter_alert/rflutter_alert.dart";
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Animation/FadeAnimation.dart';
 import './CreateAccountPage.dart';
@@ -20,9 +21,44 @@ class LoginPageState extends State<LoginPage> {
   final passwordController = TextEditingController();
 
   bool loading = false; 
+  bool isLogged = false; 
 
   @override
+  void initState() {
+
+    super.initState();
+
+    screenChecker();
+
+  }
+
+    Future<bool> _loggedIn(bool state) async {
+    final prefs = await SharedPreferences.getInstance();
+
+
+    final test = await prefs.setBool('loginCheck', state);
+
+    return test;
+
+  }
+
+  void screenChecker() async {
+
+    final prefs = await SharedPreferences.getInstance();
+
+    final checker = await prefs.getBool('loginCheck');
+
+    if(checker == true ){
+
+       Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) =>  HomePage())
+       );
+    }
+  }
+  @override
   Widget build(BuildContext context) {
+
     return loading ? Loading() : Scaffold(
         //whole pages background colour
         backgroundColor: Color.fromRGBO(26, 26, 48, .9),
@@ -183,6 +219,8 @@ class LoginPageState extends State<LoginPage> {
                                 setState(() {
                                   loading = false; 
                                 });
+
+                                _loggedIn(false);
                                 Alert(
                                   context: context,
                                   type: AlertType.error,
@@ -201,7 +239,8 @@ class LoginPageState extends State<LoginPage> {
                                     )
                                   ],
                                 ).show();
-                              } else {
+                              } else {  
+                                _loggedIn(true);
                                  Navigator.push(
                                   context,
                                   MaterialPageRoute(builder: (context) =>  HomePage())
@@ -287,4 +326,5 @@ class LoginPageState extends State<LoginPage> {
           ),
         ));
   }
+
 }
