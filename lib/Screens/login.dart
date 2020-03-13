@@ -23,6 +23,8 @@ class LoginPageState extends State<LoginPage> {
   bool loading = false; 
   bool isLogged = false; 
 
+  // app initializer 
+
   @override
   void initState() {
 
@@ -31,6 +33,8 @@ class LoginPageState extends State<LoginPage> {
     screenChecker();
 
   }
+
+  // function to determine loggedIn status. Called in Log in Button if true
 
     Future<bool> _loggedIn(bool state) async {
     final prefs = await SharedPreferences.getInstance();
@@ -41,6 +45,8 @@ class LoginPageState extends State<LoginPage> {
     return test;
 
   }
+
+  // fuction to determine which screen to show
 
   void screenChecker() async {
 
