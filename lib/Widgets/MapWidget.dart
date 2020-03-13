@@ -1,5 +1,6 @@
 
 import 'dart:convert';
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -27,9 +28,17 @@ class _MapWidgetState extends State<MapWidget> {
     super.initState();
     mapController = MapController();
    updateLocation();
+   locationTimer();
   }
 
+  // function for updating location each 5 second
 
+  void locationTimer() {
+     Timer.periodic(Duration(seconds: 5), (timer) {
+        print("Location Updated");
+        updateLocation();
+      });
+  }
   // function to fetch data from database and decode that
   void updateLocation(){
     http.get(JSONURL).then((response){
@@ -40,7 +49,6 @@ class _MapWidgetState extends State<MapWidget> {
         long = json_data["gps_pos_y"];
         mapController.move(LatLng(lat, long), zoom);
       });
-       print("$lat, $long");
     });
   }
 
