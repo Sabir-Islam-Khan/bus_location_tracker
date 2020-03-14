@@ -5,7 +5,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
-
+import 'package:geocoder/geocoder.dart';
+import 'package:location/location.dart';
 
 import 'package:http/http.dart' as http;
 
@@ -53,16 +54,24 @@ class _MapWidgetState extends State<MapWidget> {
   }
 
   // map zoom position NOTE: it's better with the range from 15-19
-  double zoom = 17;
+  double zoom = 16;
+
+  // geocoding section NOT WORKING
+  void getAddress() async {
+
+    final coordinates = new Coordinates(25.91505833333334, 89.43475666666669);
+    var addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
+    print(addresses);
+
+  }
 
   @override
   Widget build(BuildContext context) {
     return Column(
-
       children: <Widget>[
         Container(
 
-      height: MediaQuery.of(context).size.height * 0.6,
+      height: MediaQuery.of(context).size.height * 0.8,
       width: MediaQuery.of(context).size.width * 1,
       child: new FlutterMap(
         mapController: mapController,
@@ -93,17 +102,11 @@ class _MapWidgetState extends State<MapWidget> {
       ],
     ),
     ),
-
-    // button for testing purpose
     RaisedButton(
       onPressed: (){
-        print("Called");
-       updateLocation();
+        
       },
-
-      elevation: 20.0,
-      color: Colors.blueAccent,
-      child: Text("Refresh", style: TextStyle(fontSize: 20.0),),
+      child: Text("Get Address"),
     ),
       ],
     );

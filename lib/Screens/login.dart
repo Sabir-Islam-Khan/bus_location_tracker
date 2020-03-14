@@ -66,9 +66,12 @@ class LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
 
     return loading ? Loading() : Scaffold(
+        
+        // this line fix the error when keyboard pops up
+        resizeToAvoidBottomPadding: false,
         //whole pages background colour
         backgroundColor: Color.fromRGBO(26, 26, 48, .9),
-        body: SingleChildScrollView(
+        body: Container(
           // container for every other element
           child: Container(
             height: MediaQuery.of(context).size.height * 1,
@@ -87,7 +90,7 @@ class LoginPageState extends State<LoginPage> {
                       Positioned(
                         left: 50,
                         width: 180,
-                        height: 300,
+                        height: MediaQuery.of(context).size.height * 0.323,
                         child: FadeAnimation(
                             1,
                             Container(
@@ -106,7 +109,7 @@ class LoginPageState extends State<LoginPage> {
                       Positioned(
                         left: 230,
                         width: 190,
-                        height: 270,
+                        height: MediaQuery.of(context).size.height * 0.327,
                         child: FadeAnimation(
                             1.4,
                             Container(
@@ -122,10 +125,12 @@ class LoginPageState extends State<LoginPage> {
                       ),
                       // App title animation
                       Positioned(
+                        height: MediaQuery.of(context).size.height * 0.75,
+                        width: MediaQuery.of(context).size.width * 1,
                         child: FadeAnimation(
                             2.0,
                             Container(
-                              margin: EdgeInsets.only(top: 260),
+                              
                               child: Center(
                                 child: Text(
                                   "Bus App",
@@ -140,16 +145,22 @@ class LoginPageState extends State<LoginPage> {
                     ],
                   ),
                   // End of top section
-                ),
-                Padding(
-                  padding: EdgeInsets.all(30.0),
-                  child: Column(
+                ),   
+                Container(
+                    width: MediaQuery.of(context).size.width * 1,
+                    height: MediaQuery.of(context).size.height * 0.55,
+
+                    child: Column(
                     // Column for User name and password
                     children: <Widget>[
-                      Padding(padding: EdgeInsets.only(top: 20.0)),
+                      Padding(padding: EdgeInsets.only(
+                        top: MediaQuery.of(context).size.height * 0.06),
+                        ),
                       FadeAnimation(
                           2.4,
                           Container(
+                            width: MediaQuery.of(context).size.width * 0.9,
+                            height: MediaQuery.of(context).size.height * 0.175,
                             padding: EdgeInsets.all(5),
                             decoration: BoxDecoration(
                                 color: Color(0xffe46b10),
@@ -198,7 +209,7 @@ class LoginPageState extends State<LoginPage> {
                                 )
                               ],
                             ),
-                          )),
+                          ),),
                       SizedBox(
                         height: 40,
                       ),
@@ -261,7 +272,9 @@ class LoginPageState extends State<LoginPage> {
                             passwordController.clear();
                           },
                           child: Container(
-                            height: 50,
+                            width: MediaQuery.of(context).size.width * 0.9,
+
+                            height: MediaQuery.of(context).size.height * 0.06,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                                 boxShadow: [
@@ -326,7 +339,7 @@ class LoginPageState extends State<LoginPage> {
                       ),
                     ],
                   ),
-                )
+                  ),
               ],
             ),
           ),
