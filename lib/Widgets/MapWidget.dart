@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
 import 'package:geocoder/geocoder.dart';
-import 'package:location/location.dart';
 
 import 'package:http/http.dart' as http;
 
@@ -30,6 +29,7 @@ class _MapWidgetState extends State<MapWidget> {
     mapController = MapController();
    updateLocation();
    locationTimer();
+   getAddress();
   }
 
   // function for updating location each 5 second
@@ -38,6 +38,7 @@ class _MapWidgetState extends State<MapWidget> {
      Timer.periodic(Duration(seconds: 5), (timer) {
         print("Location Updated");
         updateLocation();
+        getAddress();
       });
   }
   // function to fetch data from database and decode that
@@ -51,19 +52,28 @@ class _MapWidgetState extends State<MapWidget> {
         mapController.move(LatLng(lat, long), zoom);
       });
     });
+
   }
 
   // map zoom position NOTE: it's better with the range from 15-19
   double zoom = 16;
 
-  // geocoding section NOT WORKING
+  // geocoding section Working
   void getAddress() async {
 
-    final coordinates = new Coordinates(25.91505833333334, 89.43475666666669);
+    final coordinates = new Coordinates(lat, long);
     var addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
-    print(addresses);
+    var first = addresses.first;
+    print("${first.featureName} : ${first.addressLine}");
 
+    String street = first.addressLine;
+
+    setState(() {
+      streetName = street; 
+    });
   }
+
+  String streetName = 'Fetching Data'; 
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +81,7 @@ class _MapWidgetState extends State<MapWidget> {
       children: <Widget>[
         Container(
 
-      height: MediaQuery.of(context).size.height * 0.8,
+      height: MediaQuery.of(context).size.height * 0.6,
       width: MediaQuery.of(context).size.width * 1,
       child: new FlutterMap(
         mapController: mapController,
@@ -102,11 +112,12 @@ class _MapWidgetState extends State<MapWidget> {
       ],
     ),
     ),
-    RaisedButton(
-      onPressed: (){
-        
-      },
-      child: Text("Get Address"),
+
+    Text(
+      streetName,
+      style: TextStyle(
+        fontSize: 30.0
+      ),
     ),
       ],
     );
