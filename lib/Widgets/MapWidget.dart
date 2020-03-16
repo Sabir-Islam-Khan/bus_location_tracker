@@ -81,7 +81,7 @@ class _MapWidgetState extends State<MapWidget> {
       children: <Widget>[
         Container(
 
-      height: MediaQuery.of(context).size.height * 0.6,
+      height: MediaQuery.of(context).size.height * 0.7,
       width: MediaQuery.of(context).size.width * 1,
       child: new FlutterMap(
         mapController: mapController,
