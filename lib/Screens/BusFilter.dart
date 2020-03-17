@@ -1,3 +1,5 @@
+import 'package:bus_location_tracker/Screens/HomePage.dart';
+import 'package:bus_location_tracker/Widgets/MapWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -14,8 +16,7 @@ class _BusFilterState extends State<BusFilter> {
   // Container for searched
 
   Container searcedItem(DocumentSnapshot a, BuildContext ctx) {
-
-   return  Container(
+    return Container(
       color: Colors.blueAccent,
       height: 160.0,
       width: MediaQuery.of(ctx).size.width * 1,
@@ -32,12 +33,20 @@ class _BusFilterState extends State<BusFilter> {
             padding: EdgeInsets.all(10.0),
             child: Column(
               children: <Widget>[
-                Text(
-                  a.data['name'],
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 35.0,
-                    fontWeight: FontWeight.bold,
+                GestureDetector(
+                  onTap: () {
+                    String id = a.data['coach'];
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => HomePage(id)));
+                    print(id);
+                  },
+                  child: Text(
+                    a.data['name'],
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 35.0,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
                 Text(
@@ -70,7 +79,6 @@ class _BusFilterState extends State<BusFilter> {
         ),
       ),
     );
-
   }
 
   // Container for main display list
@@ -92,12 +100,20 @@ class _BusFilterState extends State<BusFilter> {
             padding: EdgeInsets.all(10.0),
             child: Column(
               children: <Widget>[
-                Text(
-                  doc.data['name'],
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 35.0,
-                    fontWeight: FontWeight.bold,
+                GestureDetector(
+                  onTap: () {
+                     String id = doc.data['coach'];
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => HomePage(id)));
+                    print(id);
+                  },
+                  child: Text(
+                    doc.data['name'],
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 35.0,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
                 Text(
@@ -149,46 +165,52 @@ class _BusFilterState extends State<BusFilter> {
                   color: Colors.black,
                 ),
               ),
-              onChanged: (text){
-
+              onChanged: (text) {
                 text = text.toUpperCase();
 
                 setState(() {
-                  searchText = text; 
+                  searchText = text;
                 });
-
               },
             ),
-            searchText == null ? StreamBuilder<QuerySnapshot>(
-              stream: db.collection('BUSES').snapshots(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-
-                  return Column(
-                    children: snapshot.data.documents
-                        .map((doc) => buildItem(doc, context))
-                        .toList(),
-                  );
-                } else {
-                  return SizedBox();
-                }
-              },
-            ) : StreamBuilder<QuerySnapshot>(
-              stream: db.collection('BUSES').snapshots(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                final results =
-                snapshot.data.documents.where((DocumentSnapshot a)
-                 => a.data['coach'].toString().contains(searchText));
-                  return Column(
-                    children: results.map<Widget>((a) => 
-                    searcedItem(a, context)).toList(),
-                  );
-                } else {
-                  return SizedBox();
-                }
-              },
-            ),
+            searchText == null
+                ? StreamBuilder<QuerySnapshot>(
+                    stream: db.collection('BUSES').snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return Column(
+                          children: snapshot.data.documents
+                              .map((doc) => buildItem(doc, context))
+                              .toList(),
+                        );
+                      } else {
+                        return SizedBox();
+                      }
+                    },
+                  )
+                : StreamBuilder<QuerySnapshot>(
+                    stream: db.collection('BUSES').snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        final results = snapshot.data.documents.where(
+                            (DocumentSnapshot a) =>
+                                a.data['coach']
+                                    .toString()
+                                    .contains(searchText) ||
+                                a.data['name']
+                                    .toString()
+                                    .toUpperCase()
+                                    .contains(searchText));
+                        return Column(
+                          children: results
+                              .map<Widget>((a) => searcedItem(a, context))
+                              .toList(),
+                        );
+                      } else {
+                        return SizedBox();
+                      }
+                    },
+                  ),
           ],
         ),
       ),

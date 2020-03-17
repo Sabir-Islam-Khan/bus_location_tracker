@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'dart:async';
 
@@ -9,10 +8,12 @@ import 'package:geocoder/geocoder.dart';
 
 import 'package:http/http.dart' as http;
 
-var JSONURL = "https://bus-location-tracker-3313f.firebaseio.com/vehicles/test001.json";
 
 class MapWidget extends StatefulWidget {
-
+  
+  String busId;
+  MapWidget(this.busId);
+  
   @override
   createState() => _MapWidgetState();
 }
@@ -20,12 +21,13 @@ class MapWidget extends StatefulWidget {
 class _MapWidgetState extends State<MapWidget> {
 
   MapController mapController;
-
+  var JSONURL; 
   // initial location for testing
   double lat = 24.91515, long = 84.43516666666666;
   @override
   void initState() {
     super.initState();
+    JSONURL = "https://bus-location-tracker-3313f.firebaseio.com/vehicles/${widget.busId}.json";
     mapController = MapController();
    updateLocation();
    locationTimer();
@@ -56,7 +58,7 @@ class _MapWidgetState extends State<MapWidget> {
   }
 
   // map zoom position NOTE: it's better with the range from 15-19
-  double zoom = 16;
+  double zoom = 15;
 
   // geocoding section Working
   void getAddress() async {
@@ -73,7 +75,7 @@ class _MapWidgetState extends State<MapWidget> {
     });
   }
 
-  String streetName = 'Fetching Data'; 
+  String streetName = 'Fetching Street Address'; 
 
   @override
   Widget build(BuildContext context) {
